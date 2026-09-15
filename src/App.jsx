@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import logo from './assets/toolbiz-logo.svg'
 import './App.css'
 
 const stats = [
@@ -24,6 +25,28 @@ const services = [
   {
     title: 'Automation Systems',
     text: 'CRM, sales workflows, and client onboarding systems that remove friction and save your team time.',
+  },
+]
+
+const pricing = [
+  {
+    name: 'Starter Website',
+    price: 'From R4,500',
+    description: 'Landing page or small business website with 3-5 pages and responsive design.',
+    features: ['Responsive design', 'Contact form', 'Basic SEO', '1 revision round'],
+  },
+  {
+    name: 'Business App',
+    price: 'From R12,000',
+    description: 'A full-stack web app with dashboard, authentication, and database-backed features.',
+    features: ['Frontend + backend', 'Admin dashboard', 'Database setup', 'Deployment support'],
+    featured: true,
+  },
+  {
+    name: 'Custom Product',
+    price: 'From R25,000',
+    description: 'More advanced builds for startups, service businesses, or internal tools.',
+    features: ['Custom workflows', 'API integrations', 'User roles', 'Priority support'],
   },
 ]
 
@@ -75,6 +98,10 @@ const defaultForm = {
   message: '',
 }
 
+const personalEmail = 'ncebamadzinge24@gmail.com'
+const personalPhone = '+27 63 741 3249'
+const whatsappLink = `https://wa.me/27637413249?text=${encodeURIComponent('Hello Toolbiz Digital, I would like to discuss a project opportunity.')}`
+
 function App() {
   const [formData, setFormData] = useState(defaultForm)
   const [formStatus, setFormStatus] = useState({ type: 'idle', message: '' })
@@ -87,7 +114,7 @@ function App() {
     }
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
     const values = Object.values(formData).map((value) => String(value).trim())
@@ -99,12 +126,44 @@ function App() {
       return
     }
 
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      company: formData.company,
+      project: formData.project,
+      message: formData.message,
+      _subject: `New enquiry from ${formData.name}`,
+      _captcha: 'false',
+    }
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/' + personalEmail, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (response.ok) {
+        setFormStatus({
+          type: 'success',
+          message: 'Your message has been sent successfully. We will be in touch soon.',
+        })
+        setFormData(defaultForm)
+        return
+      }
+    } catch (error) {
+      console.error('Form submission failed', error)
+    }
+
     const subject = encodeURIComponent(`New enquiry from ${formData.name}`)
     const body = encodeURIComponent(
       `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company}\nProject type: ${formData.project}\n\nProject details:\n${formData.message}`
     )
 
-    window.location.href = `mailto:hello@toolbizdigital.com?subject=${subject}&body=${body}`
+    window.location.href = `mailto:${personalEmail}?subject=${subject}&body=${body}`
 
     setFormStatus({
       type: 'success',
@@ -117,7 +176,7 @@ function App() {
     <div className="app-shell">
       <header className="topbar">
         <div className="brand-wrap">
-          <span className="brand-mark">T</span>
+          <img src={logo} alt="Toolbiz Digital logo" className="brand-mark" />
           <div>
             <strong>Toolbiz Digital</strong>
             <small>Growth partner</small>
@@ -213,6 +272,29 @@ function App() {
           </div>
         </section>
 
+        <section className="section pricing-section" id="pricing">
+          <div className="section-heading">
+            <span className="eyebrow">Pricing</span>
+            <h2>Beginner full-stack developer rates in South Africa.</h2>
+          </div>
+
+          <div className="pricing-grid">
+            {pricing.map((plan) => (
+              <article key={plan.name} className={`pricing-card ${plan.featured ? 'featured' : ''}`}>
+                {plan.featured ? <span className="pricing-badge">Most popular</span> : null}
+                <h3>{plan.name}</h3>
+                <div className="price">{plan.price}</div>
+                <p>{plan.description}</p>
+                <ul>
+                  {plan.features.map((feature) => (
+                    <li key={feature}>{feature}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section className="section process-section" id="process">
           <div className="section-heading">
             <span className="eyebrow">How we work</span>
@@ -282,10 +364,19 @@ function App() {
             </p>
 
             <ul className="contact-list">
-              <li>Email: hello@toolbizdigital.com</li>
-              <li>Phone: +1 (415) 555-0148</li>
+              <li>Email: ncebamadzinge24@gmail.com</li>
+              <li>Phone: +27 63 741 3249</li>
               <li>Available for projects worldwide</li>
             </ul>
+
+            <div className="contact-actions">
+              <a className="primary-button" href={`mailto:${personalEmail}`}>
+                Email us
+              </a>
+              <a className="secondary-button" href={whatsappLink} target="_blank" rel="noreferrer">
+                WhatsApp
+              </a>
+            </div>
           </div>
 
           <form className="contact-form" onSubmit={handleSubmit} noValidate>

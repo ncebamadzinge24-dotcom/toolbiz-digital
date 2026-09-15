@@ -1,16 +1,29 @@
-# React + Vite
+# Toolbiz Digital
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A publish-ready business website built with React and Vite for Toolbiz Digital.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Modern one-page business landing page
+- Conversion-focused layout for service business growth
+- Contact form with FormSubmit fallback to email client
+- WhatsApp and email CTA buttons
+- Responsive design for desktop and mobile
+- SEO metadata and branded assets
 
-## React Compiler
+## Run locally
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev -- --host 0.0.0.0
+```
 
-## Expanding the Oxlint configuration
+## Build for production
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```bash
+npm run build
+```
+
+## Deploy
+
+This project is ready to publish as a static site on Netlify, Vercel, GitHub Pages, or any Vite-compatible host.
